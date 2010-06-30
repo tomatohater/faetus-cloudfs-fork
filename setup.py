@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
 from distutils.core import setup
-from ftpcloudfs.constants import version
+from faetus.constants import version
 
-setup(name='ftp-cloudfs',
+setup(name='faetus',
       version=version,
-      description='FTP interface to Rackspace Cloud Files',
-      author='Chmouel Boudjnah',
-      author_email='chmouel.boudjnah@rackspace.co.uk',
-      url='http://blog.chmouel.com',
-      packages=['ftpcloudfs'],
-      scripts=['bin/ftpcloudfs']
+      description='An FTP interface to Amazon S3 file storage.',
+      author='Drew Engelson',
+      author_email='drew@engelson.net',
+      url='http://tomatohater.com',
+      packages=['faetus'],
+      scripts=['bin/faetus-server']
      )
