@@ -8,7 +8,7 @@ from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
 
-class AmazonS3Operations(object):
+class FaetusOperations(object):
     '''Storing connection object'''
     def __init__(self):
         self.connection = None
@@ -22,10 +22,10 @@ class AmazonS3Operations(object):
     def __repr__(self):
         return self.connection
     
-operations = AmazonS3Operations()
+operations = FaetusOperations()
 
 
-class AmazonS3Authorizer(ftpserver.DummyAuthorizer):
+class FaetusAuthorizer(ftpserver.DummyAuthorizer):
     '''FTP server authorizer. Logs the users into Rackspace Cloud
     Files and keeps track of them.
     '''
@@ -60,7 +60,7 @@ class AmazonS3Authorizer(ftpserver.DummyAuthorizer):
         return 'Goodbye %s' % username
 
 
-class AmazonS3FD(object):
+class FaetusFD(object):
 
     def __init__(self, username, bucket, obj, mode):
         self.username = username
@@ -109,7 +109,7 @@ class AmazonS3FD(object):
         raise IOError(1, 'Operation not permitted')
 
 
-class AmazonS3FS(ftpserver.AbstractedFS):
+class FaetusFS(ftpserver.AbstractedFS):
     '''Amazon S3 File system emulation for FTP server.
     '''
 
@@ -128,7 +128,7 @@ class AmazonS3FS(ftpserver.AbstractedFS):
 
     def open(self, filename, mode):
         username, bucket, obj = self.parse_fspath(filename)
-        return AmazonS3FD(username, bucket, obj, mode)
+        return FaetusFD(username, bucket, obj, mode)
 
     def chdir(self, path):
         if path.startswith(self.root):
