@@ -27,7 +27,7 @@ def setup_log(log_file=None):
 
 def main():
     ''' Main function'''
-    parser = OptionParser(usage="ftpcloudfs [OPTIONS].....")
+    parser = OptionParser(usage="faetus-server [OPTIONS].....")
     parser.add_option('-p', '--port',
                       type="int",
                       dest="port",
