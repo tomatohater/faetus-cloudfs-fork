@@ -1,5 +1,0 @@
-2009-11-02  Chmouel Boudjnah  <chmouel.boudjnah@rackspace.co.uk>
-
-	* server.py (RackspaceCloudAuthorizer.validate_authentication):
-	Add servicenet support.
-
