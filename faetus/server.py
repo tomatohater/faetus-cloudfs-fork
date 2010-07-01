@@ -2,6 +2,7 @@ import os
 import datetime
 import time
 import mimetypes
+import tempfile
 
 from pyftpdlib import ftpserver
 from boto.s3.connection import S3Connection
@@ -69,6 +70,8 @@ class FaetusFD(object):
         self.mode = mode
         self.closed = False
         self.total_size = 0
+        self.temp_file_path = None
+        self.temp_file = None
 
         if not all([username, bucket, obj]):
             self.closed = True
@@ -90,20 +93,29 @@ class FaetusFD(object):
             if not self.obj:
                 # key does not exist, create it
                 self.obj = self.bucket.new_key(self.name)
+            # create a temporary file
+            self.temp_file_path = tempfile.mkstemp()[1]
+            self.temp_file = open(self.temp_file_path, 'w')
 
     def write(self, data):
         if 'r' in self.mode:
             raise OSError(1, 'Operation not permitted')
-        self.obj.set_contents_from_string(data)
-        self.obj.close()
-
+        self.temp_file.write(data)
+        
     def close(self):
         if 'r' in self.mode:
             return
-
+        self.temp_file.close()
+        self.obj.set_contents_from_filename(self.temp_file_path)
+        self.obj.close()
+        
+        # clean up the temporary file
+        os.remove(self.temp_file_path)
+        self.temp_file_path = None
+        self.temp_file = None
+    
     def read(self, size=65536):
-        readsize = self.obj.size
-        return self.obj.read(size=readsize)
+        return self.obj.read()
 
     def seek(self, *kargs, **kwargs):
         raise IOError(1, 'Operation not permitted')
