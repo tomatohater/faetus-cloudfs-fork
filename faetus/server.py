@@ -133,7 +133,8 @@ class FaetusFS(ftpserver.AbstractedFS):
             raise ValueError('parse_fspath: You have to provide a full path')
         parts = path.split(os.sep)[1:]
         if len(parts) > 3:
-            raise ValueError('parse_fspath: Path too deep')
+            # join extra 'directories' into key
+            parts = parts[0], parts[1], os.sep.join(parts[2:])
         while len(parts) < 3:
             parts.append('')
         return tuple(parts)
